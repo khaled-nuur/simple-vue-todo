@@ -1,0 +1,165 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>My Todo!</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/paper/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700">
+    <style>
+        body {
+            position: relative;
+        }
+        
+        * {
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        .I-list {
+            list-style: none;
+            text-align: justify;
+            font-size: 1.5em;
+            border-bottom: 1px solid #e0e0e0;
+            padding-top: 2px;
+        }
+        
+        .I-list.done {
+            opacity: .4;
+        }
+        
+        .btn:focus,
+        input:focus {
+            outline: none;
+            /* Important style I love if it was applied to 'Paper' by default */
+        }
+        /* footer! */
+        
+        i {
+            font-size: 10px;
+        }
+        
+        code {
+            font-size: 12px;
+        }
+        
+        .label {
+            font-size: 20px;
+        }
+        
+        code {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        
+        #app-1 {
+            margin-bottom: 100px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="bg-warning">
+        <h1 class="text-warning" style="
+    margin: 0px;
+    padding: 0px;font-family: 'Roboto Slab', serif;font-weight:700;font-size:80px
+">Vue ToDo</h1>
+    </header>
+    <main class="container">
+        <h3>New Task</h3>
+        <div id="app-2" class="container">
+            <div class="input-group">
+                <input type="text" v-model='taskTitle' class='form-control' placeholder='your task title here' @keyup.enter='saveAsToDo()'>
+                <div class="input-group-btn">
+                    <button class="btn btn-warning btn-md" v-on:click='saveAsToDo()'>Save!</button>
+                </div>
+            </div>
+
+        </div>
+        <div id="app-1">
+            <h1>Doing
+                <div class="label label-warning">{{howManyTasks().doing}}</div>
+            </h1>
+            <todo-item v-for='(task, index) in Tasks' v-if='!task.isDone' v-bind:todo='task.title' v-bind:done=false class='I-list' v-on:done='setTimeout(function (){Tasks[index].isDone = true},400)'></todo-item>
+            <hr />
+            <h1>Done
+                <div class="label label-success">{{howManyTasks().done}}</div>
+            </h1>
+            <todo-item v-for='(task, index) in Tasks' v-if='task.isDone' v-bind:todo='task.title' v-bind:done=true class='I-list done' v-on:done='setTimeout(function (){Tasks[index].isDone = false},300)'></todo-item>
+            <hr />
+        </div>
+        <code>Powered by <a href="vuejs.org">Vue.js</a>. written by <a href="https://github.com/khaled-nuur">khaled nuur</a>
+  <br />
+    Developed with {{love}} a {{keyboard}} and a {{mice}}! <i class="text-warning">coffee not included</i> ☕☕
+    <br />
+    ENJOY USING ❤️️❤️️
+  </code>
+        <!-- looks good for this note -->
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.2/vue.min.js"></script>
+    <script>
+        //  register components
+        Vue.component("todo-item", {
+            props: ["todo", "done"], // FUTURE : pass the wholo todo object as property
+            template: '<div><input type="checkbox" @change="$emit(\'done\') "class="check" v-bind:checked="done">{{todo}}</div>'
+        });
+        var app1 = new Vue({
+            el: "#app-1",
+            data: {
+                Tasks: [{
+                        title: "this task is done",
+                        isDone: true
+                    },
+                    {
+                        title: "this task is been done...",
+                        isDone: false
+                    }
+                ]
+            },
+            methods: {
+                howManyTasks: function() {
+                    var i = 0,
+                        u = 0; // short for done & doing.
+                    this.Tasks.forEach(el => {
+                        if (el.isDone == false) {
+                            i++;
+                        } else {
+                            u++;
+                        }
+                    });
+                    return {
+                        doing: i,
+                        done: u
+                    };
+                }
+            }
+        });
+        var app2 = new Vue({
+            el: "#app-2",
+            data: {
+                taskTitle: ""
+            },
+            methods: {
+                // function ONE
+                saveAsToDo: function() {
+                    // push task to the to-doS
+                    app1.Tasks.unshift({
+                        title: this.taskTitle,
+                        isDone: false
+                    }); // make it at line one
+                    // remove old task text from the input
+                    this.taskTitle = "";
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>
