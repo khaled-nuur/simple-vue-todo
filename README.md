@@ -2,6 +2,7 @@
 [app on CodePen](https://codepen.io/khaled_pens/full/MvNmeq)
 
 ![screen shot of the app as .gif](https://github.com/khaled-nuur/simple-vue-todo/blob/master/screen%20shot.gif "the app in my browser!")
+---
 an app I built after learning Vue for about 2 days (3-4h/day)*but without concentration!*.
 
 just 'Hello, World' in Vue/any UI framework, hope you enjoy it.
